@@ -378,7 +378,13 @@ function render() {
   const {phase, filtered, currentIdx} = state;
   const area = document.getElementById('resultArea');
   const hero = document.getElementById('hero');
-  if (hasSearched) hero.classList.add('collapsed');
+  if (hasSearched) {
+    hero.classList.add('collapsed');
+    document.documentElement.style.overflow = '';
+    document.documentElement.style.height = '';
+    document.body.style.overflow = '';
+    document.body.style.height = '';
+  }
 
   if (phase === 'loading') { area.innerHTML = loaderHTML(); initLogoLottie(); initPotatoLottie(); return; }
   if (phase === 'error')   { area.innerHTML = errorHTML();  initLogoLottie(); initPotatoLottie(); return; }
@@ -391,7 +397,10 @@ function render() {
   }
   area.innerHTML = resultsHTML(filtered, currentIdx);
   initLogoLottie(); initPotatoLottie();
-  requestAnimationFrame(() => { updateSlider(true); initSliderEvents(); });
+  requestAnimationFrame(() => {
+    updateSlider(true); initSliderEvents();
+    setTimeout(() => area.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+  });
 }
 
 // ── Lottie inits (animationData = no XHR) ─
@@ -659,6 +668,12 @@ document.getElementById('searchInput').addEventListener('keydown', e => { if(e.k
 window.addEventListener('resize', () => { if(state.filtered?.length) updateSlider(false); });
 
 // ── Init ─────────────────────────────────
+// lock scroll until first search
+document.documentElement.style.overflow = 'hidden';
+document.documentElement.style.height = '100dvh';
+document.body.style.overflow = 'hidden';
+document.body.style.height = '100dvh';
+
 render();
 fetchData();
 </script>
