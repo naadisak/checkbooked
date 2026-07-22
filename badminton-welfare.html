@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>สวัสดิการสนามแบดมินตัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f4c75;
+    --primary-light: #1b6ca8;
+    --accent: #00d4aa;
+    --accent-glow: rgba(0,212,170,0.35);
+    --gold: #f5c518;
+    --bg: #060d1a;
+    --surface: rgba(255,255,255,0.06);
+    --surface-hover: rgba(255,255,255,0.1);
+    --border: rgba(255,255,255,0.1);
+    --text: #f0f4ff;
+    --text-muted: rgba(240,244,255,0.55);
+    --danger: #ff6b6b;
+    --card-radius: 24px;
+    --shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    overscroll-behavior: none;
+  }
+
+  /* ── Background ── */
+  .bg-art {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  }
+  .bg-art::before {
+    content: '';
+    position: absolute; inset: -50%;
+    background: radial-gradient(ellipse 80% 60% at 60% 30%, rgba(0,212,170,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 20% 80%, rgba(15,76,117,0.25) 0%, transparent 55%);
+    animation: bgPulse 8s ease-in-out infinite alternate;
+  }
+  .court-lines {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(0,212,170,1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,170,1) 1px, transparent 1px);
+    background-size: 48px 48px;
+    transform: rotate(-8deg) scale(1.4);
+  }
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(70px); opacity: 0.12;
+    animation: float 10s ease-in-out infinite;
+  }
+  .orb1 { width:340px; height:340px; background:var(--accent); top:-80px; right:-80px; animation-delay:0s; }
+  .orb2 { width:260px; height:260px; background:var(--primary-light); bottom:-60px; left:-60px; animation-delay:3s; }
+  .orb3 { width:180px; height:180px; background:var(--gold); top:40%; left:50%; animation-delay:6s; opacity:0.07; }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-30px) scale(1.08); }
+  }
+  @keyframes bgPulse {
+    0%   { opacity: 0.8; }
+    100% { opacity: 1; }
+  }
+
+  /* ── Layout ── */
+  .app {
+    position: relative; z-index: 1;
+    min-height: 100dvh;
+    display: flex; flex-direction: column;
+    align-items: center;
+    padding: 0 0 40px;
+    max-width: 480px; margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    width: 100%; padding: 52px 24px 24px;
+    text-align: center;
+  }
+  .header-icon {
+    width: 72px; height: 72px; margin: 0 auto 16px;
+    background: linear-gradient(135deg, var(--accent), var(--primary-light));
+    border-radius: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px; line-height: 1;
+    box-shadow: 0 8px 32px var(--accent-glow);
+    animation: iconBounce 3s ease-in-out infinite;
+  }
+  @keyframes iconBounce {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-6px) rotate(2deg); }
+  }
+  .header h1 {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.3px;
+    background: linear-gradient(135deg, #fff 30%, var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header p {
+    font-size: 13px; color: var(--text-muted); margin-top: 6px; font-weight: 400;
+  }
+  .badge-month {
+    display: inline-block; margin-top: 10px;
+    padding: 4px 14px; border-radius: 99px;
+    background: rgba(245,197,24,0.15); border: 1px solid rgba(245,197,24,0.4);
+    font-size: 12px; font-weight: 600; color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Search ── */
+  .search-wrap {
+    width: 100%; padding: 0 20px; margin-top: 8px;
+  }
+  .search-box {
+    position: relative;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    display: flex; align-items: center;
+    overflow: hidden;
+    transition: border-color .3s, box-shadow .3s;
+    backdrop-filter: blur(12px);
+  }
+  .search-box:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+  }
+  .search-icon {
+    padding: 0 14px 0 18px; font-size: 20px; opacity: 0.6;
+    flex-shrink: 0;
+  }
+  .search-box input {
+    flex: 1; background: none; border: none; outline: none;
+    color: var(--text); font-family: 'Sarabun', sans-serif;
+    font-size: 18px; font-weight: 600; padding: 17px 0;
+    letter-spacing: 2px;
+  }
+  .search-box input::placeholder { color: var(--text-muted); font-weight: 400; letter-spacing: 0; }
+  .search-box input[type=number]::-webkit-inner-spin-button,
+  .search-box input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+  .btn-search {
+    margin: 8px; padding: 10px 20px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #00b894);
+    color: #fff; font-family: 'Sarabun', sans-serif;
+    font-size: 14px; font-weight: 700; border: none; cursor: pointer;
+    white-space: nowrap; transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+  .btn-search:active { transform: scale(0.95); }
+
+  .search-hint {
+    text-align: center; font-size: 12px; color: var(--text-muted);
+    margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .search-hint span { font-size: 16px; }
+
+  /* ── States ── */
+  .state-box {
+    margin: 40px 20px 0; width: calc(100% - 40px);
+    padding: 36px 24px; border-radius: var(--card-radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-align: center;
+    animation: fadeUp .4s ease;
+  }
+  .state-box .emoji { font-size: 48px; margin-bottom: 12px; display: block; }
+  .state-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .state-box p  { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .state-error h3 { color: var(--danger); }
+
+  .loading-dots { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
+  .loading-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); opacity: 0.3;
+    animation: dotPulse 1.2s ease-in-out infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: .2s; }
+  .loading-dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes dotPulse {
+    0%,80%,100% { opacity: 0.2; transform: scale(0.85); }
+    40%          { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* ── Result Header ── */
+  .result-header {
+    width: 100%; padding: 24px 20px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    animation: fadeUp .4s ease;
+  }
+  .result-name { font-size: 15px; font-weight: 700; }
+  .result-count {
+    font-size: 12px; font-weight: 600; color: var(--accent);
+    background: rgba(0,212,170,0.12); border: 1px solid rgba(0,212,170,0.3);
+    padding: 4px 12px; border-radius: 99px;
+  }
+
+  /* ── Cards Slider ── */
+  .slider-wrap {
+    width: 100%; overflow: hidden; padding: 4px 0 20px;
+    position: relative;
+  }
+  .slider-track {
+    display: flex;
+    transition: transform .45s cubic-bezier(0.25,0.46,0.45,0.94);
+    will-change: transform;
+  }
+  .card {
+    flex-shrink: 0;
+    width: calc(100vw - 40px);
+    max-width: 440px;
+    margin: 0 8px;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    background: linear-gradient(145deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.04) 100%);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+    animation: cardIn .5s cubic-bezier(0.34,1.56,0.64,1) both;
+    transform-origin: center top;
+  }
+  .card:first-child { margin-left: 20px; }
+  .card:last-child  { margin-right: 20px; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.94); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* card top band */
+  .card-top {
+    padding: 24px 24px 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    position: relative; overflow: hidden;
+  }
+  .card-top::after {
+    content: '🏸';
+    position: absolute; right: 20px; bottom: -8px;
+    font-size: 64px; opacity: 0.12; transform: rotate(30deg);
+  }
+  .card-no {
+    font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.55); text-transform: uppercase; margin-bottom: 8px;
+  }
+  .card-name {
+    font-size: 21px; font-weight: 800; color: #fff; line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .card-id {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 8px; padding: 4px 12px;
+    background: rgba(0,0,0,0.25); border-radius: 99px;
+    font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--accent);
+  }
+
+  /* card body */
+  .card-body { padding: 20px 24px 24px; }
+
+  .info-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-icon {
+    width: 36px; height: 36px; border-radius: 12px;
+    background: rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0; margin-top: 2px;
+  }
+  .info-label { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.5px; }
+  .info-value { font-size: 14px; font-weight: 600; margin-top: 2px; line-height: 1.4; }
+  .info-value.accent { color: var(--accent); }
+
+  .pill {
+    display: inline-block; padding: 3px 10px; border-radius: 99px;
+    font-size: 12px; font-weight: 600;
+  }
+  .pill-green { background: rgba(0,212,170,0.15); color: var(--accent); border: 1px solid rgba(0,212,170,0.3); }
+  .pill-blue  { background: rgba(27,108,168,0.25); color: #74b9ff; border: 1px solid rgba(27,108,168,0.4); }
+  .pill-gold  { background: rgba(245,197,24,0.15); color: var(--gold); border: 1px solid rgba(245,197,24,0.3); }
+
+  /* card footer */
+  .card-footer {
+    padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.15);
+  }
+  .footer-source { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .footer-hours {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 700; color: var(--gold);
+  }
+
+  /* ── Dots ── */
+  .dots-wrap {
+    display: flex; gap: 8px; justify-content: center; margin-top: 4px;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 99px;
+    background: rgba(255,255,255,0.2);
+    transition: all .3s ease; cursor: pointer;
+  }
+  .dot.active {
+    width: 24px; background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+
+  /* ── Nav Arrows ── */
+  .nav-arrows {
+    display: flex; gap: 12px; justify-content: center; margin-top: 16px;
+  }
+  .nav-btn {
+    width: 48px; height: 48px; border-radius: 16px; border: none; cursor: pointer;
+    background: rgba(255,255,255,0.08); backdrop-filter: blur(8px);
+    color: var(--text); font-size: 20px; display: flex; align-items: center; justify-content: center;
+    transition: all .2s; border: 1px solid var(--border);
+  }
+  .nav-btn:hover  { background: rgba(255,255,255,0.15); }
+  .nav-btn:active { transform: scale(0.9); }
+  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Loader overlay ── */
+  #fetchLoader {
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+    transition: opacity .5s;
+  }
+  #fetchLoader .logo { font-size: 52px; animation: iconBounce 1.5s ease-in-out infinite; }
+  #fetchLoader p { font-size: 14px; color: var(--text-muted); }
+
+  /* scroll bar */
+  ::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Fetch Loader -->
+<div id="fetchLoader">
+  <div class="logo">🏸</div>
+  <div class="loading-dots"><span></span><span></span><span></span></div>
+  <p>กำลังโหลดข้อมูลสวัสดิการ...</p>
+</div>
+
+<!-- BG Art -->
+<div class="bg-art">
+  <div class="court-lines"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-icon">🏸</div>
+    <h1>สวัสดิการสนามแบดมินตัน</h1>
+    <p>ตรวจสอบประวัติการใช้สนาม</p>
+    <div class="badge-month">สิงหาคม 2569</div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-wrap">
+    <div class="search-box" id="searchBox">
+      <span class="search-icon">🔍</span>
+      <input
+        type="number"
+        id="searchInput"
+        placeholder="กรอกรหัสพนักงาน"
+        inputmode="numeric"
+        maxlength="6"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button class="btn-search" onclick="doSearch()">ค้นหา</button>
+    </div>
+    <div class="search-hint">
+      <span>💡</span> กด Enter หรือกด ค้นหา เพื่อดูข้อมูล
+    </div>
+  </div>
+
+  <!-- Results Area -->
+  <div id="resultArea" style="width:100%"></div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//  Config
+// ═══════════════════════════════════════
+const SHEET_ID  = '1NmpnbahfJiO_csxvWtfaJGW5jJeVbJ3uy6ty2AW42mk';
+const SHEET_GID = '0';
+const CSV_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
+
+let DB = [];
+let currentIdx = 0;
+let filteredData = [];
+let startX = 0, isDragging = false;
+
+// ═══════════════════════════════════════
+//  Fetch & Parse CSV
+// ═══════════════════════════════════════
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  // Find header row (skip title row if first col is not expected header)
+  let headerIdx = 0;
+  for (let i = 0; i < Math.min(3, lines.length); i++) {
+    if (lines[i].includes('วันที่เล่น') || lines[i].includes('รหัส')) { headerIdx = i; break; }
+  }
+  const headers = splitCSVRow(lines[headerIdx]).map(h => h.trim().replace(/^"|"$/g,''));
+  const rows = [];
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const vals = splitCSVRow(lines[i]).map(v => v.trim().replace(/^"|"$/g,''));
+    if (vals.length < 3) continue;
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h] = vals[idx] || ''; });
+    if (obj['รหัส']) rows.push(obj);
+  }
+  return rows;
+}
+
+function splitCSVRow(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') { inQ = !inQ; }
+    else if (ch === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += ch; }
+  }
+  result.push(cur);
+  return result;
+}
+
+async function fetchData() {
+  try {
+    const res = await fetch(CSV_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    DB = parseCSV(text);
+    console.log('Loaded', DB.length, 'records');
+    hideFetchLoader();
+  } catch(e) {
+    console.error(e);
+    hideFetchLoader();
+    showFetchError();
+  }
+}
+
+function hideFetchLoader() {
+  const el = document.getElementById('fetchLoader');
+  el.style.opacity = '0';
+  setTimeout(() => el.style.display = 'none', 500);
+}
+
+function showFetchError() {
+  document.getElementById('resultArea').innerHTML = stateHTML(
+    '⚠️','โหลดข้อมูลไม่สำเร็จ',
+    'กรุณาตรวจสอบว่า Google Sheet ตั้งค่าเป็น "ทุกคนที่มีลิงก์" แล้ว<br>หรือลองโหลดหน้าใหม่',
+    'error'
+  );
+}
+
+// ═══════════════════════════════════════
+//  Search
+// ═══════════════════════════════════════
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (!q) { pulse(); return; }
+
+  filteredData = DB.filter(r => {
+    const id = (r['รหัส'] || '').trim().replace(/^0+/, '');
+    const qn = q.replace(/^0+/, '');
+    return id === qn || (r['รหัส'] || '').trim() === q;
+  });
+
+  currentIdx = 0;
+  renderResults();
+}
+
+function pulse() {
+  const box = document.getElementById('searchBox');
+  box.style.animation = 'none';
+  box.offsetHeight;
+  box.style.animation = 'pulseBorder .4s ease';
+}
+
+// ═══════════════════════════════════════
+//  Render
+// ═══════════════════════════════════════
+function stateHTML(emoji, title, msg, type='') {
+  return `<div class="state-box ${type?'state-'+type:''}">
+    <span class="emoji">${emoji}</span>
+    <h3>${title}</h3>
+    <p>${msg}</p>
+  </div>`;
+}
+
+function renderResults() {
+  const area = document.getElementById('resultArea');
+
+  if (filteredData.length === 0) {
+    area.innerHTML = stateHTML('🔍','ไม่พบข้อมูล',
+      'ไม่พบรหัสพนักงานนี้ในระบบ<br>กรุณาตรวจสอบรหัสอีกครั้ง');
+    return;
+  }
+
+  const name = filteredData[0]['ชื่อ-สกุล'] || '';
+  const total = filteredData.length;
+
+  let html = `<div class="result-header">
+    <div class="result-name">คุณ ${name}</div>
+    <div class="result-count">${total} รายการ</div>
+  </div>
+  <div class="slider-wrap" id="sliderWrap">
+    <div class="slider-track" id="sliderTrack">
+      ${filteredData.map((r, i) => buildCard(r, i, total)).join('')}
+    </div>
+  </div>
+  <div class="dots-wrap" id="dotsWrap">
+    ${filteredData.map((_, i) => `<div class="dot ${i===0?'active':''}" onclick="goTo(${i})"></div>`).join('')}
+  </div>`;
+
+  if (total > 1) {
+    html += `<div class="nav-arrows">
+      <button class="nav-btn" id="btnPrev" onclick="prev()" disabled>←</button>
+      <button class="nav-btn" id="btnNext" onclick="next()">→</button>
+    </div>`;
+  }
+
+  area.innerHTML = html;
+  initSwipe();
+  updateSlider();
+}
+
+function buildCard(r, i, total) {
+  const dept = r['ฝ่ายงาน'] || '-';
+  const unit = r['หน่วยงาน'] || '-';
+  const date = r['วันที่เล่น'] || '-';
+  const court = r['สนาม'] || '-';
+  const time = r['ช่วงเวลา'] || '-';
+  const loc = r['สถานที่'] || '-';
+  const hrs = r['จำนวนชม.'] || '-';
+  const src = r['แหล่งที่มา'] || '';
+  const id = r['รหัส'] || '';
+
+  const locPill = loc.includes('กรมยุท') ?
+    `<span class="pill pill-blue">${loc}</span>` :
+    `<span class="pill pill-green">${loc}</span>`;
+
+  const delay = i * 0.06;
+
+  return `<div class="card" style="animation-delay:${delay}s">
+    <div class="card-top">
+      <div class="card-no">รายการที่ ${i+1} / ${total}</div>
+      <div class="card-name">${r['ชื่อ-สกุล'] || '-'}</div>
+      <div class="card-id">🪪 ${id}</div>
+    </div>
+    <div class="card-body">
+      <div class="info-row">
+        <div class="info-icon">📅</div>
+        <div>
+          <div class="info-label">วันที่เล่น</div>
+          <div class="info-value accent">${date}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">สถานที่</div>
+          <div class="info-value">${locPill}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🏟</div>
+        <div>
+          <div class="info-label">สนาม</div>
+          <div class="info-value">สนาม ${court}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">⏰</div>
+        <div>
+          <div class="info-label">ช่วงเวลา</div>
+          <div class="info-value">${time}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🏢</div>
+        <div>
+          <div class="info-label">ฝ่ายงาน</div>
+          <div class="info-value">${dept}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📋</div>
+        <div>
+          <div class="info-label">หน่วยงาน</div>
+          <div class="info-value" style="font-size:12px;color:var(--text-muted)">${unit}</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="footer-source">${src ? '📂 ' + src : ''}</span>
+      ${hrs && hrs !== '-' ? `<div class="footer-hours">⏱ ${hrs} ชั่วโมง</div>` : ''}
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+//  Slider logic
+// ═══════════════════════════════════════
+function updateSlider() {
+  const track = document.getElementById('sliderTrack');
+  if (!track) return;
+  const cardW = track.children[0]?.offsetWidth + 16 || 0;
+  track.style.transform = `translateX(calc(-${currentIdx * cardW}px))`;
+
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentIdx));
+  const btnP = document.getElementById('btnPrev');
+  const btnN = document.getElementById('btnNext');
+  if (btnP) btnP.disabled = currentIdx === 0;
+  if (btnN) btnN.disabled = currentIdx === filteredData.length - 1;
+}
+
+function goTo(i) {
+  currentIdx = Math.max(0, Math.min(filteredData.length - 1, i));
+  updateSlider();
+}
+function prev() { goTo(currentIdx - 1); }
+function next() { goTo(currentIdx + 1); }
+
+// ── Touch / Mouse swipe ──
+function initSwipe() {
+  const wrap = document.getElementById('sliderWrap');
+  if (!wrap) return;
+  wrap.addEventListener('touchstart',  e => { startX = e.touches[0].clientX; isDragging = true; }, {passive:true});
+  wrap.addEventListener('touchend',    e => { if (!isDragging) return; isDragging = false;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
+  });
+  wrap.addEventListener('mousedown',   e => { startX = e.clientX; isDragging = true; });
+  wrap.addEventListener('mouseup',     e => { if (!isDragging) return; isDragging = false;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
+  });
+}
+
+// ── Keyboard ──
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+// ── Pulse animation for empty search ──
+const styleEl = document.createElement('style');
+styleEl.textContent = `
+@keyframes pulseBorder {
+  0%,100% { border-color: rgba(255,255,255,.1); box-shadow: none; }
+  50% { border-color: var(--danger); box-shadow: 0 0 0 4px rgba(255,107,107,.2); }
+}`;
+document.head.appendChild(styleEl);
+
+// ── Resize recalc ──
+window.addEventListener('resize', () => { if (filteredData.length) updateSlider(); });
+
+// ── Init ──
+fetchData();
+</script>
+</body>
+</html>
