@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🐚 อีหอย | กำลังปรับปรุงข้อมูล</title>
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/667417c7ec.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* ---------- Reset & พื้นหลัง ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', 'Tahoma', Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #0b1a2f;
+        }
+
+        /* พื้นหลังเบลอ + ภาพก่อสร้าง */
+        .background {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: url("https://vidyasheela.com/web-contents/website-components/Coming-Soon-Pages/website-under-construction-page-template-html/construction.jpg") #08093cb3;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-blend-mode: darken;
+            filter: blur(10px);
+            transform: scale(1.05);
+            z-index: -1;
+        }
+
+        /* ---------- กล่องเนื้อหาหลัก ---------- */
+        .container {
+            width: 600px;
+            max-width: 92%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            padding: 40px 30px 45px;
+            border-radius: 60px 60px 30px 30px;
+            border: 2px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            position: relative;
+            z-index: 5;
+            animation: floatBox 3.5s ease-in-out infinite;
+        }
+
+        /* หัวข้อ WEBSITE NAME + เส้น */
+        .top {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: #fdcb6e;
+            text-transform: uppercase;
+        }
+        .top hr {
+            width: 60px;
+            border: 1px solid #fdcb6e55;
+            border-radius: 5px;
+            margin: 0 12px;
+        }
+        .top p {
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        /* หัวข้อหลัก "อีหอย" */
+        h1 {
+            font-size: clamp(3.2rem, 12vw, 5.5rem);
+            font-weight: 900;
+            color: #fdcb6e;
+            text-shadow: 0 6px 0 #e17055, 0 12px 40px rgba(0, 0, 0, 0.5);
+            letter-spacing: 4px;
+            line-height: 1.1;
+            margin-bottom: 4px;
+            animation: popTitle 2.2s ease-in-out infinite alternate;
+        }
+
+        .sub-head {
+            font-size: clamp(1rem, 2.5vw, 1.6rem);
+            color: #dfe6e9;
+            background: rgba(225, 112, 85, 0.2);
+            padding: 8px 24px;
+            border-radius: 40px;
+            border: 1px dashed #fdcb6e;
+            display: inline-block;
+            margin-bottom: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .sub-head span {
+            display: inline-block;
+            animation: danceText 1.6s ease-in-out infinite;
+        }
+
+        /* Progress Bar */
+        h3 {
+            font-size: 1rem;
+            color: #b2bec3;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .progress-wrapper {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 30px;
+            height: 14px;
+            margin-bottom: 22px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #fdcb6e, #e17055);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            transition: width 0.15s ease-out;
+            position: relative;
+        }
+
+        .progress span {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #0b1a2f;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0 6px;
+            border-radius: 20px;
+            line-height: 1.6;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        /* Social Icons (แบบมุก) */
+        .social-icons {
+            margin: 10px auto 6px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .social-icons a {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 28px;
+            margin: 4px 8px;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-decoration: none;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .social-icons a:hover {
+            color: #fdcb6e;
+            transform: scale(1.2) rotate(-6deg);
+        }
+
+        /* ปุ่มเด้ง (เพิ่มจากของเดิม) */
+        .btn-hoy {
+            margin-top: 18px;
+            background: #e17055;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #b85c44, 0 8px 30px rgba(225, 112, 85, 0.4);
+            transition: all 0.08s linear;
+            font-family: 'Sarabun', 'Tahoma', sans-serif;
+            border: 2px solid #fdcb6e;
+            animation: btnPulse 1.8s ease-in-out infinite alternate;
+        }
+
+        .btn-hoy:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #b85c44, 0 8px 30px rgba(225, 112, 85, 0.2);
+        }
+
+        .btn-hoy:hover {
+            background: #ff7a5c;
+            transform: scale(1.03);
+        }
+
+        /* ฟุตเตอร์ */
+        .footer-note {
+            margin-top: 18px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+        }
+
+        /* ---------- Animations ---------- */
+        @keyframes floatBox {
+            0%, 100% { transform: translateY(0px) rotate(-0.3deg); }
+            50% { transform: translateY(-10px) rotate(0.3deg); }
+        }
+
+        @keyframes popTitle {
+            0% { transform: scale(1) rotate(-0.5deg); text-shadow: 0 6px 0 #e17055, 0 0 50px rgba(253, 203, 110, 0.15); }
+            100% { transform: scale(1.04) rotate(0.5deg); text-shadow: 0 8px 0 #e17055, 0 0 80px rgba(253, 203, 110, 0.5); }
+        }
+
+        @keyframes danceText {
+            0%, 100% { transform: rotate(0deg) translateY(0); }
+            30% { transform: rotate(6deg) translateY(-4px); }
+            70% { transform: rotate(-6deg) translateY(3px); }
+        }
+
+        @keyframes btnPulse {
+            0% { box-shadow: 0 8px 0 #b85c44, 0 8px 30px rgba(225, 112, 85, 0.3); }
+            100% { box-shadow: 0 8px 0 #b85c44, 0 8px 50px rgba(253, 203, 110, 0.6); }
+        }
+
+        /* ---------- Responsive ---------- */
+        @media screen and (max-width: 640px) {
+            .container { padding: 30px 20px 35px; }
+            .top hr { width: 30px; }
+            .social-icons a { font-size: 22px; margin: 4px 6px; }
+            .btn-hoy { padding: 10px 24px; font-size: 0.95rem; }
+        }
+
+        @media screen and (max-width: 400px) {
+            .container { padding: 20px 14px 25px; border-radius: 40px; }
+            h1 { font-size: 2.6rem; }
+            .top { font-size: 0.7rem; }
+            .social-icons a { font-size: 18px; margin: 2px 4px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- พื้นหลังเบลอ -->
+    <div class="background"></div>
+
+    <!-- เนื้อหาหลัก -->
+    <div class="container">
+        <!-- หัวข้อบน -->
+        <div class="top">
+            <hr />
+            <p>🐚 TQMalpha</p>
+            <hr />
+        </div>
+
+        <!-- หัวข้อหลัก -->
+        <h1>Under construction</h1>
+        <div class="sub-head">
+            <span>⚡</span> System Down<span>⚡</span>
+        </div>
+
+        <!-- Progress Bar -->
+        <h3>🚧 progress load</h3>
+        <div class="progress-wrapper">
+            <div class="progress" id="progressBar">
+                <span id="percentText">0%</span>
+            </div>
+        </div>
+
+        <!-- Social Icons (ปรับเป็นลิงก์มุกๆ) -->
+        <div class="social-icons">
+            <a href="#" title="เฟสหอย"><i class="fab fa-facebook"></i></a>
+            <a href="#" title="ทวิตหอย"><i class="fab fa-twitter"></i></a>
+            <a href="#" title="ติดต่อหอย"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="อิกหอย"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="ยูทูปหอย"><i class="fab fa-youtube"></i></a>
+            <a href="#" title="RSS หอย"><i class="fas fa-rss"></i></a>
+        </div>
+
+        <!-- ปุ่มแจ้งเตือน (เพิ่มเติม) -->
+        <button class="btn-hoy" id="notifyBtn">🔔 แจ้งเตือนเมื่อใช้งานได้</button>
+
+        <div class="footer-note">🏸 รอแป๊บ... หอยกำลังไล่บั๊ก 🐛</div>
+    </div>
+
+    <!-- ============ JavaScript ============ -->
+    <script>
+        // รอให้ DOM โหลดเสร็จก่อนทำงาน
+        document.addEventListener('DOMContentLoaded', function() {
+            const progress = document.getElementById('progressBar');
+            const percentText = document.getElementById('percentText');
+
+            let per = 0;
+            const maxPercent = 85; // วิ่งไปถึง 85% แล้วหยุด (ไม่เต็ม 100 เพื่อความมุก)
+
+            function progressLoad() {
+                if (per >= maxPercent) {
+                    progress.style.width = maxPercent + '%';
+                    percentText.textContent = maxPercent + '%';
+                    // หยุด interval
+                    clearInterval(intervalId);
+                    // แสดงข้อความมุก
+                    percentText.textContent = '🐌';
+                    return;
+                }
+
+                progress.style.width = per + '%';
+                percentText.textContent = per + '%';
+                per++;
+            }
+
+            // เรียกครั้งแรก
+            progressLoad();
+
+            // ตั้ง interval
+            const intervalId = setInterval(progressLoad, 80);
+        });
+
+        // ปุ่มแจ้งเตือน (ทำงานแยก)
+        document.getElementById('notifyBtn').addEventListener('click', function() {
+            alert('🏸 บอกแล้วว่า หอยกำลังซ่อม! รอแป๊บนะเดี๋ยวตีแบดได้!\n(หรืออาจจะไม่ได้ อีหอยขี้เกียจ 🤣)');
+        });
+    </script>
+</body>
+</html>
